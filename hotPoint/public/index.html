@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>Test</title>
+        <title>Heatmap</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="../main.js"></script>
+        <script type="text/javascript" src="./vender/heatmap.min.js"></script>
+        <script type="text/javascript" src="./vender/jquery.min.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
     </head>
     <body>
         <div id="main">
-            <canvas id="canvas" width="8000" height="8000" style="margin: 0 auto;background-color: blue;">
+            <div class="heatmap" style="width: 640px;height: 640px;background-color: blue;"></div>
+            <!--canvas id="canvas" width="8000" height="8000" style="margin: 0 auto;background-color: blue;">
                 Browser didn't support canvas!
-            </canvas>
+            </canvas-->
         </div>
     </body>
 </html>

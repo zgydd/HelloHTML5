@@ -1,7 +1,7 @@
 {
     "name": "hotPoint",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
+    "version": "0.0.1",
+    "keywords": ["heatmap"],
     "author": "bartonjoe",
     "contributors": [],
     "dependencies": {}
