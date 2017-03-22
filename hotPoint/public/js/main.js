@@ -1,7 +1,7 @@
 'use strict';
 window.onload = function () {
 
-    var radius = 20;
+    var radius = 10;
 
     var dataResult = getInnerData();
     var width = dataResult.data.length * radius + radius;
@@ -36,16 +36,7 @@ window.onload = function () {
     }
 
     var imgData = context.getImageData(0, 0, width, height);
-    //    console.log(imgData.data);
     for (var i = 0; i < imgData.data.length; i += 4) {
-//        for (var j = gradientDictionary.length - 1; j >= 0; j--) {
-//            if (imgData.data[i + 3] > gradientDictionary[j].alpha) {
-//                imgData.data[i] = gradientDictionary[j].colorR;
-//                imgData.data[i + 1] = gradientDictionary[j].colorG;
-//                imgData.data[i + 2] = gradientDictionary[j].colorB;
-//                break;
-//            }
-//        }
         if (imgData.data[i + 3] <= 128)
             imgData.data[i] = imgData.data[i + 3] * 2;
         else
@@ -104,7 +95,6 @@ window.onload = function () {
     }
 
     var imgData = context.getImageData(0, 0, width, height);
-    //    console.log(imgData.data);
     for (var i = 0; i < imgData.data.length; i += 4) {
         for (var j = gradientDictionary.length - 1; j >= 0; j--) {
             if (imgData.data[i + 3] > gradientDictionary[j].alpha) {
@@ -114,20 +104,6 @@ window.onload = function () {
                 break;
             }
         }
-//        if (imgData.data[i + 3] <= 128)
-//            imgData.data[i] = imgData.data[i + 3] * 2;
-//        else
-//            imgData.data[i] = 256;
-//
-//
-//        if (imgData.data[i + 3] < 85)
-//            imgData.data[i] = imgData.data[i + 3] * 3;
-//        else if (imgData.data[i + 3] < 170)
-//            imgData.data[i + 1] = 256;
-//        else
-//            imgData.data[i + 1] = 256 - imgData.data[i + 3] * 3;
-//
-//        imgData.data[i + 2] = 256 - imgData.data[i + 3];
     }
     context.putImageData(imgData, 0, 0);
 
