@@ -63,10 +63,9 @@ window.onload = function () {
     context = canvas.getContext('2d');
     var denominator = dataResult.max - dataResult.min;
 
-    var gradientDictionary = [{alpha: 52, colorR: 0, colorG: 0, colorB: 255}
-        , {alpha: 104, colorR: 0, colorG: 255, colorB: 0}
-        , {alpha: 153, colorR: 255, colorG: 255, colorB: 0}
-        , {alpha: 205, colorR: 255, colorG: 0, colorB: 0}];
+    var dataRange = [{scale: 1, critial: 700}, {scale: 2, critial: 500}, {scale: 3, critial: 300}, {scale: 4, critial: 100}];
+
+    var alphaRangeCritial = 256 / (dataRange.length + 1);
 
     for (var i = 0; i < dataResult.data.length; i++) {
         for (var j = 0; j < dataResult.data[i].length; j++) {
@@ -75,25 +74,59 @@ window.onload = function () {
             var alp = (dataResult.data[i][j] - dataResult.min) / denominator;
 
             var gradientIdx = 0;
-            for (gradientIdx = 0; gradientIdx < gradientDictionary.length; gradientIdx++) {
-                if (alp > gradientDictionary[gradientIdx].alpha)
+            for (gradientIdx = dataRange.length + 1; gradientIdx > 0; gradientIdx--) {
+                if (alp * 256 > gradientIdx * alphaRangeCritial)
                     break;
             }
-
-            if (gradientIdx <= 0)
-                break;
             context.beginPath();
-            context.arc(i * radius + radius, j * radius + radius, radius, 0, Math.PI * 2);
+            context.arc(i * radius + radius, j * radius + radius, radius * (1 + gradientIdx / (dataRange.length + 1)), 0, Math.PI * 2);
             context.closePath();
 
-            var gradient = context.createRadialGradient(i * radius + radius, j * radius + radius, 0, i * radius + radius, j * radius + radius, radius);
-            gradient.addColorStop(0, 'rgba(0,0,0,' + alp + ')');
+            var gradient = context.createRadialGradient(i * radius + radius, j * radius + radius, radius / 8, i * radius + radius, j * radius + radius, radius * (1 + gradientIdx / (dataRange.length + 1)));
+            //gradient.addColorStop(0, 'rgba(0,0,0,' + alp + ')');
+            //console.log('---------------' + gradientIdx + '------------------');
+            for (var k = 0; k < gradientIdx; k++) {
+                //console.log((k / gradientIdx) + '::' + (alp / (k + 1)));
+                gradient.addColorStop((k / gradientIdx), 'rgba(0,0,0,' + (alp / (k + 1)) + ')');
+            }
             gradient.addColorStop(1, 'rgba(0,0,0,0)');
             context.fillStyle = gradient;
             context.fill();
         }
     }
 
+
+//    var gradientDictionary = [{alpha: 52, colorR: 0, colorG: 0, colorB: 255}
+//        , {alpha: 104, colorR: 0, colorG: 255, colorB: 0}
+//        , {alpha: 153, colorR: 255, colorG: 255, colorB: 0}
+//        , {alpha: 205, colorR: 255, colorG: 0, colorB: 0}];
+//
+//    for (var i = 0; i < dataResult.data.length; i++) {
+//        for (var j = 0; j < dataResult.data[i].length; j++) {
+//            if (dataResult.data[i][j] === 0)
+//                continue;
+//            var alp = (dataResult.data[i][j] - dataResult.min) / denominator;
+//
+//            var gradientIdx = 0;
+//            for (gradientIdx = 0; gradientIdx < gradientDictionary.length; gradientIdx++) {
+//                if (alp > gradientDictionary[gradientIdx].alpha)
+//                    break;
+//            }
+//
+//            if (gradientIdx <= 0)
+//                break;
+//            context.beginPath();
+//            context.arc(i * radius + radius, j * radius + radius, radius, 0, Math.PI * 2);
+//            context.closePath();
+//
+//            var gradient = context.createRadialGradient(i * radius + radius, j * radius + radius, 0, i * radius + radius, j * radius + radius, radius);
+//            gradient.addColorStop(0, 'rgba(0,0,0,' + alp + ')');
+//            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+//            context.fillStyle = gradient;
+//            context.fill();
+//        }
+//    }
+//
     var imgData = context.getImageData(0, 0, width, height);
     for (var i = 0; i < imgData.data.length; i += 4) {
         for (var j = gradientDictionary.length - 1; j >= 0; j--) {
