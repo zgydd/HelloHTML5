@@ -37,20 +37,23 @@ window.onload = function () {
 
     var imgData = context.getImageData(0, 0, width, height);
     for (var i = 0; i < imgData.data.length; i += 4) {
-        if (imgData.data[i + 3] <= 128)
-            imgData.data[i] = imgData.data[i + 3] * 2;
-        else
-            imgData.data[i] = 256;
-
-
-        if (imgData.data[i + 3] < 85)
-            imgData.data[i] = imgData.data[i + 3] * 3;
-        else if (imgData.data[i + 3] < 170)
-            imgData.data[i + 1] = 256;
-        else
-            imgData.data[i + 1] = 256 - imgData.data[i + 3] * 3;
-
-        imgData.data[i + 2] = 256 - imgData.data[i + 3];
+        switch (true) {
+            case (imgData.data[i + 3] <= 85):
+                imgData.data[i] = 0;
+                imgData.data[i + 1] = imgData.data[i + 3] * 3;
+                imgData.data[i + 2] = 256 - imgData.data[i + 3] * 3;
+                break;
+            case (imgData.data[i + 3] <= 170):
+                imgData.data[i] = imgData.data[i + 3] * 3;
+                imgData.data[i + 1] = 256;
+                imgData.data[i + 2] = 0;
+                break;
+            default:
+                imgData.data[i] = 256;
+                imgData.data[i + 1] = 256 - imgData.data[i + 3] * 3;
+                imgData.data[i + 2] = 0;
+                break;
+        }
     }
     context.putImageData(imgData, 0, 0);
 
